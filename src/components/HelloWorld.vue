@@ -1,14 +1,19 @@
 
 
 <template>
-<DynamicForm :options="formOption" :config="fromConfig" :value="formState" :onFormFinish="handleButton"  />
+  <h1>呢容</h1>
+  <DynamicForm :options="formOption" :config="formConfig" :value="formState" :onFormFinish="handleButton"  />
+
+
+
 </template>
 
 
 <script setup lang="ts">
+import '../style.css'
 import{reactive} from 'vue'
-import DynamicForm from '../antdDesignVue/FormDesign/antdForm.tsx'
-import { FormItemOption, FormItemRadio, FormItemSelect, FormItemType,FormRules } from '../antdDesignVue/FormDesign/FormConfig/public-index';
+import DynamicForm from '../antdDesignVue/FormDesign/antdForm'
+import { FormConfig, FormItemOption, FormItemRadio, FormItemSelect, FormItemType,FormLabelWrapperCol,FormLayout,FormRules } from '../antdDesignVue/public-index';
 interface formItem{
     resource:string,
     textarea:string,
@@ -16,7 +21,7 @@ interface formItem{
 }
 const formState=reactive<formItem>({
     resource:'0',
-    textarea:'0',
+    textarea:'',
     graud:1,
 });
 const formOption=reactive<any>([
@@ -33,9 +38,10 @@ const formOption=reactive<any>([
   }
 ])
 
-const fromConfig=reactive<any>({
-  ref:'formRef'
-});
+const formConfig=new FormConfig();
+formConfig.layout=FormLayout.horizontal;
+
+
 const itemRadio=new FormItemRadio();
 itemRadio.type=FormItemType.Radio;
 itemRadio.label="性别";
@@ -60,8 +66,12 @@ itemSelect.onChange=(value)=>{
 formOption.push(itemRadio);
 formOption.push(itemSelect);
 formOption.push({
-  type:'submit'
+  type:'submit',
+  wrapperCol:{ span:12, offset:6}  as FormLabelWrapperCol
 });
+
+
+
 
 const handleButton=((value)=>{
   console.log(value);

@@ -1,17 +1,16 @@
 
 import {  defineComponent, PropType, watch } from 'vue';
-import {  FormItemType } from './FormConfig/public-index';
+import {  FormConfig, FormItemType } from './FormConfig/public-index';
 import { Button, CheckboxGroup, Form,FormItem,Input,message,RadioGroup,Select} from 'ant-design-vue'
 
 function renderFormItem(formItems: any[]) {
-    return formItems.map((ele: any) => {
-        if(ele.type==="submit")
-            return (<FormItem>{createFormItem(ele)}</FormItem>)
-        else
+    return formItems.map((ele: any) => 
+        {
             return (<FormItem label={ele?.label} name={ele?.fileId}
-            rules={ele?.FormRules}>{createFormItem(ele)}
-        </FormItem>)
-    })
+                wrapper-col={ele?.wrapperCol}
+                rules={ele?.FormRules}>{createFormItem(ele)}
+            </FormItem>)
+        })
 }
 
 function createFormItem(formItem: any){
@@ -32,7 +31,10 @@ function createFormItem(formItem: any){
     }
     //提交按钮内容
     if(formItem.type==='submit'){
-        return(<Button type='primary' html-type="submit">提交</Button>)
+        return(
+            <Button type='primary'  html-type="submit">提交</Button> 
+            // {/* <Button type='primary' class="marginLeftButton" >重置</Button> */}
+        )
     }
     return (<div>1</div>)
 }
@@ -72,8 +74,14 @@ export default  defineComponent({
                 props.value[item.fileId]=item.value; 
             })
         });
-        return ()=>(<Form   name="basic"    model={props.value} onFinish={handleSubmit}
-              onFinishFailed={handlefinishFailed} 
+        const config=props.config as FormConfig;
+        return ()=>(<Form   name="basic" model={props.value} 
+            label-col={config?.labelcol}
+            wrapper-col={config?.wrapperCol}
+            layout={config?.layout}
+            autocomplete={config?.autocomplete}
+            onFinish={handleSubmit}
+            onFinishFailed={handlefinishFailed} 
           >
             {renderFormItem(props.options)}
         </Form>);
