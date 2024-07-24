@@ -12,5 +12,5 @@ export class FormItemTextarea extends FormItem{
     showCount:boolean=true;
     maxlength:number=200;
     allowClear:boolean=true;
-    autoSize:FormItemTextareaType | undefined;
+    autoSize:FormItemTextareaType | any;
 }

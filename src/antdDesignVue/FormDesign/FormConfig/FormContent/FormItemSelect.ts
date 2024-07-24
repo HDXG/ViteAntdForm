@@ -19,5 +19,9 @@ export class FormItemSelect extends FormItem{
     //设置Select模式内容 
     mode:FormItemSelectMode=FormItemSelectMode.combobox;
 
+    //后缀图标
+    suffixIcon?:string|any=null;
+
+    //事件内容
     onChange:(any)=>void=function(){};
 }

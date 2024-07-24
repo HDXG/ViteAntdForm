@@ -8,3 +8,9 @@
   .marginLeftButton{
     margin-left:10px;
   }
+
+  .InputIcon{
+    width:12px;
+    height:12px;
+    line-height: 12px;;  
+  }

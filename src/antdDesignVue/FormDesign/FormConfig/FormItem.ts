@@ -10,13 +10,10 @@ export class FormItem{
    fileId: string = '';
    // 值
    value: any = '';
-   //name内容
-
-   
    // 是否禁用
    disabled: boolean = false;
     //是否显示
-   IsItDisplayed:boolean=true;
+   IsItDisplayed:boolean=false;
    //placeholder 框内可显示文字
    placeholder: string = '';
 

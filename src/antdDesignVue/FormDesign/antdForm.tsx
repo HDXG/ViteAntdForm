@@ -1,12 +1,18 @@
 
 import {  defineComponent, PropType, watch } from 'vue';
 import {  FormConfig, FormItemType } from './FormConfig/public-index';
-import { Button, CheckboxGroup, Form,FormItem,Input,message,RadioGroup,Select} from 'ant-design-vue'
-
+import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
+import 'dayjs/locale/zh-cn';
+import { timeFormat } from '../..//utils/dateTime';
+import { ConfigType } from 'dayjs';
 function renderFormItem(formItems: any[]) {
     return formItems.map((ele: any) => 
         {
-            return (<FormItem label={ele?.label} name={ele?.fileId}
+            //IsItDisplayed 判断表单项是否显示
+            if(ele.IsItDisplayed){
+                return (<></>);
+            }
+            return (<FormItem  label={ele?.label} name={ele?.fileId}
                 wrapper-col={ele?.wrapperCol}
                 rules={ele?.FormRules}>{createFormItem(ele)}
             </FormItem>)
@@ -14,20 +20,51 @@ function renderFormItem(formItems: any[]) {
 }
 
 function createFormItem(formItem: any){
-    if(formItem.type === FormItemType.Input)
-        return (<Input v-model:value={formItem.value} placeholder={formItem.placeholder} onChange={formItem?.onChange}></Input>)
-    if(formItem.type === FormItemType.Radio) 
+    if(formItem.type === FormItemType.Input){
+        return (<Input v-model:value={formItem.value}
+            bordered={formItem?.bordered}
+            placeholder={formItem.placeholder} allow-clear 
+            onChange={formItem?.onChange}
+            prefix={formItem?.prefix!=null?<img src={formItem.prefix} class='InputIcon' />:null}
+            suffix={formItem?.suffix!=null?<img src={formItem.suffix} class='InputIcon' />:null}
+            >
+         </Input>)
+    }
+    if(formItem.type === FormItemType.Radio) {
         return (<RadioGroup
-        v-model:value={formItem.value}
-        options={formItem.options}  name={formItem.name} onChange={formItem?.onChange}></RadioGroup>)
-    if(formItem.type===FormItemType.Checkbox)
+            v-model:value={formItem.value}
+            options={formItem.options}  name={formItem.name} onChange={formItem?.onChange}></RadioGroup>)
+    } 
+    if(formItem.type===FormItemType.Checkbox){
         return (<CheckboxGroup
-              v-model:value={formItem.value}   options={formItem.options}  onChange={formItem?.onChange}
-        ></CheckboxGroup>)
+            v-model:value={formItem.value}   options={formItem.options}  onChange={formItem?.onChange}
+      ></CheckboxGroup>)
+    }
+    //选择框
     if(formItem.type===FormItemType.Select){
-        return(<Select
-            v-model:value={formItem.value}  mode={formItem.mode} options={formItem.options} onChange={formItem?.onChange} 
+        return(<Select v-model:value={formItem.value} mode={formItem.mode} 
+              options={formItem.options} 
+              onChange={formItem?.onChange} 
+              suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
             ></Select>)
+    }
+    //日期选择
+    if(formItem.type===FormItemType.DatePicker){
+        if(formItem.DateType==1){
+            return(<RangePicker v-model:value={formItem.value} 
+                picker={formItem?.picker}
+                bordered={formItem.bordered}
+                onChange={formItem?.onChange} 
+                suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
+            ></RangePicker>)
+        }
+        else
+            return(<DatePicker v-model:value={formItem.value} 
+                picker={formItem?.picker}
+                bordered={formItem.bordered}
+                onChange={formItem?.onChange} 
+                suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
+            ></DatePicker>)
     }
     //提交按钮内容
     if(formItem.type==='submit'){
@@ -71,7 +108,29 @@ export default  defineComponent({
         }
         watch(props.options,(newValue:any[])=>{
             newValue.map((item)=>{
-                props.value[item.fileId]=item.value; 
+                switch(item.type as FormItemType){
+                     //日期判断
+                    case FormItemType.DatePicker:
+                        if(item.value!='')
+                        {
+                            if(item.DateType==1){
+                                var date:any=[];
+                                item.value.map((dateItem:ConfigType)=>{
+                                    date.push(timeFormat(dateItem));
+                                });
+                                props.value[item.fileId]=date;
+                            }
+                            else
+                            props.value[item.fileId]=timeFormat(item.value);
+                        }
+                           
+                        break;
+                    default:
+                        props.value[item.fileId]=item.value; 
+                        break;
+                }
+               
+                
             })
         });
         const config=props.config as FormConfig;
@@ -80,6 +139,7 @@ export default  defineComponent({
             wrapper-col={config?.wrapperCol}
             layout={config?.layout}
             autocomplete={config?.autocomplete}
+            disabled={config?.disabled}
             onFinish={handleSubmit}
             onFinishFailed={handlefinishFailed} 
           >
