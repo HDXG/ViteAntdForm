@@ -100,7 +100,7 @@ export default  defineComponent({
             }  
         };  
         //表单提交失败事件
-        const handlefinishFailed=(errorInfo:any)=>{
+        const finishFailed=(errorInfo:any)=>{
             message.error(errorInfo.errorFields[0].errors);
             // if (props.onFormFinishFailed) {  
             //     props.onFormFinishFailed(errorInfo);  
@@ -135,13 +135,13 @@ export default  defineComponent({
         });
         const config=props.config as FormConfig;
         return ()=>(<Form   name="basic" model={props.value} 
-            label-col={config?.labelcol}
+            label-col={config?.labelCol}
             wrapper-col={config?.wrapperCol}
             layout={config?.layout}
             autocomplete={config?.autocomplete}
             disabled={config?.disabled}
             onFinish={handleSubmit}
-            onFinishFailed={handlefinishFailed} 
+            onFinishFailed={finishFailed} 
           >
             {renderFormItem(props.options)}
         </Form>);

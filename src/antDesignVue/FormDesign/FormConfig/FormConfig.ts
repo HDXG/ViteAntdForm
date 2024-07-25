@@ -5,7 +5,7 @@ export class FormConfig {
     //	表单布局
     layout:FormLayout=FormLayout.horizontal
     //label宽度
-    labelcol:FormLabelWrapperCol|any|{style:{width:'150px'}}=new FormLabelWrapperCol();
+    labelCol:FormLabelWrapperCol|any|{style:{width:'150px'}}=new FormLabelWrapperCol();
     //
     wrapperCol:FormLabelWrapperCol|any|{style:{width:'150px'}}=new FormLabelWrapperCol();
 

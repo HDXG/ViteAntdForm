@@ -9,14 +9,14 @@
 <script setup lang="ts">
 import '../style.css'
 import{reactive} from 'vue'
-import DynamicForm from '../antdDesignVue/FormDesign/antdForm'
-import { FormConfig, FormItemOption, FormItemRadio, FormItemSelect, FormItemSelectMode, FormItemType,FormLabelWrapperCol,FormRules } from '../antdDesignVue/public-index';
+import DynamicForm from '../antDesignVue/FormDesign/antForm'
+import { FormConfig, FormItemOption, FormItemRadio, FormItemSelect, FormItemSelectMode, FormItemType,FormLabelWrapperCol,FormRules } from '../antDesignVue/public-index';
 import SVG_ICONS from '../icons/SVG_ICONS';
 import { timeFormat } from '../utils/dateTime';
 interface formItem{
     resource:string,
     textarea:string,
-    graud:any,
+    class:any,
     textarea1:string,
     Date:string,
     BeginDate:[],
@@ -25,7 +25,7 @@ const formState=reactive<formItem>({
     resource:'0',
     textarea:'',
     textarea1:'',
-    graud:undefined,
+    class:undefined,
     Date:'',
     BeginDate:[],
 });
@@ -93,8 +93,8 @@ itemRadio.FormRules=[{required:true,message:'请选择性别'}] as FormRules[];
 const itemSelect=new FormItemSelect();
 itemSelect.type=FormItemType.Select;
 itemSelect.label='班级';
-itemSelect.fileId='graud';
-itemSelect.value=formState.graud;
+itemSelect.fileId='class';
+itemSelect.value=formState.class;
 itemSelect.options=[{value:1,label:'测试1'},{value:2,label:'测试2'}] as FormItemOption[];
 itemSelect.FormRules=[{required:true,message:'请选择班级'}] as FormRules[],
 itemSelect.suffixIcon=SVG_ICONS.setup.exitfullscreennew;
