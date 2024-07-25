@@ -3,8 +3,7 @@ import {  defineComponent, PropType, watch } from 'vue';
 import {  FormConfig, FormItemType } from './FormConfig/public-index';
 import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
 import 'dayjs/locale/zh-cn';
-import { timeFormat } from '../..//utils/dateTime';
-import { ConfigType } from 'dayjs';
+import { timeFormat } from '../../utils/dateTime';
 function renderFormItem(formItems: any[]) {
     return formItems.map((ele: any) => 
         {
@@ -54,6 +53,7 @@ function createFormItem(formItem: any){
             return(<RangePicker v-model:value={formItem.value} 
                 picker={formItem?.picker}
                 bordered={formItem.bordered}
+                presets={formItem?.presets}
                 onChange={formItem?.onChange} 
                 suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
             ></RangePicker>)
@@ -62,6 +62,7 @@ function createFormItem(formItem: any){
             return(<DatePicker v-model:value={formItem.value} 
                 picker={formItem?.picker}
                 bordered={formItem.bordered}
+                presets={formItem?.presets}
                 onChange={formItem?.onChange} 
                 suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
             ></DatePicker>)
@@ -113,15 +114,17 @@ export default  defineComponent({
                     case FormItemType.DatePicker:
                         if(item.value!='')
                         {
+                            var dateTime:any=null;
                             if(item.DateType==1){
                                 var date:any=[];
-                                item.value.map((dateItem:ConfigType)=>{
+                                item.value.map((dateItem)=>{
                                     date.push(timeFormat(dateItem));
                                 });
-                                props.value[item.fileId]=date;
+                                dateTime=date;
                             }
                             else
-                            props.value[item.fileId]=timeFormat(item.value);
+                                dateTime=item.value;
+                            props.value[item.fileId]=timeFormat(dateTime);
                         }
                            
                         break;
