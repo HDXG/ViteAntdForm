@@ -1,7 +1,7 @@
 
 import {  defineComponent, PropType, watch } from 'vue';
 import {  FormConfig, FormItemType } from './FormConfig/public-index';
-import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
+import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,InputNumber,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
 import 'dayjs/locale/zh-cn';
 import { timeFormat } from '../../utils/dateTime';
 function renderFormItem(formItems: any[]) {
@@ -67,6 +67,17 @@ function createFormItem(formItem: any){
                 suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
             ></DatePicker>)
     }
+    //数字文本框
+    if(formItem.type===FormItemType.InputNumber){
+        console.log(formItem);
+        return(<InputNumber v-model:value={formItem.value} 
+            min={formItem.min}
+            max={formItem.max}
+            bordered={formItem.bordered}
+            onChange={formItem?.onChange} 
+            prefix={formItem?.prefix!=null?<img src={formItem.prefix} class='InputIcon' />:null}
+        ></InputNumber>)
+    }
     //提交按钮内容
     if(formItem.type==='submit'){
         return(
@@ -116,11 +127,13 @@ export default  defineComponent({
                         {
                             var dateTime:any=null;
                             if(item.DateType==1){
+                               if(item.value!=null){
                                 var date:any=[];
                                 item.value.map((dateItem)=>{
                                     date.push(timeFormat(dateItem));
                                 });
                                 dateTime=date;
+                               }
                             }
                             else
                                 dateTime=item.value;

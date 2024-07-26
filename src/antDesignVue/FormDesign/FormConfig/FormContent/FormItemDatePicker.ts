@@ -21,14 +21,16 @@ export class FormItemDatePicker extends FormItem{
    //事件内容
    onChange:(any)=>void=function(){};
 }
-/***
+/**
  * 返回预设时间默认值
  */
 export function DatePickerPresetsData(data:DatePickerPresets[]|any=null){
     return data==null?[ { label: '七天前', value: [dayjs().add(-7, 'd'), dayjs()] },
     { label: '14天前', value: [dayjs().add(-14, 'd'), dayjs()] },
     { label: '30天前', value: [dayjs().add(-30, 'd'), dayjs()] },
-    { label: '90天前', value: [dayjs().add(-90, 'd'), dayjs()] }] as DatePickerPresets[]
+    { label: '90天前', value: [dayjs().add(-90, 'd'), dayjs()] },
+    { label: '180天前', value: [dayjs().add(-180, 'd'), dayjs()]},
+    { label: '360天前', value: [dayjs().add(-360, 'd'), dayjs()]},] as DatePickerPresets[]
     :data as DatePickerPresets[];
 } 
 

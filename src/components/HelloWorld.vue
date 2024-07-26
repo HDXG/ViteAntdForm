@@ -20,6 +20,7 @@ interface formItem{
     textarea1:string,
     Date:string,
     BeginDate:[],
+    money:number,
 }
 const formState=reactive<formItem>({
     resource:'0',
@@ -28,6 +29,7 @@ const formState=reactive<formItem>({
     class:undefined,
     Date:'',
     BeginDate:[],
+    money:1,
 })
 const formOption=reactive<any>([
   {
@@ -76,6 +78,15 @@ const formOption=reactive<any>([
     }
   },
   {
+    type:FormItemType.InputNumber,
+    label:'金额',
+    fileId:'money',
+    value:formState.money,
+    min:0,
+    max:100,
+    FormRules:[{required:true,message:'请输入金额'}] as FormRules[],
+  },
+  {
     type:FormItemType.DatePicker,
     label:'日期选择',
     fileId:'Date',
@@ -99,14 +110,15 @@ const formOption=reactive<any>([
       formState.BeginDate=timeFormat(value,1)
     }
   },
+ 
   {
     type:'submit',
     wrapperCol:{ span:12, offset:6}  as FormLabelWrapperCol
   }
 ])
 const formConfig=new FormConfig();
-const handleButton=((value)=>{
-  console.log(value);
+const handleButton=((value:formItem)=>{
+  console.log(value.class.join(','));
 })
 
 </script>

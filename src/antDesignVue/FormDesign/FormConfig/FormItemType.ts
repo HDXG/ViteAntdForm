@@ -1,4 +1,6 @@
-//配置antd-design组件名称内容
+/**
+ * 配置ant-design组件名称内容
+ */
 export enum FormItemType{
     Input,//文本框
     InputNumber,//数字框
@@ -8,6 +10,7 @@ export enum FormItemType{
     Checkbox,//多选框 
     Switch, //开关选择类型
     DatePicker,
+
 }
 
 export class FormItemOption{
