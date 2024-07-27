@@ -34,11 +34,6 @@ function createFormItem(formItem: any){
             v-model:value={formItem.value}
             options={formItem.options}  name={formItem.name} onChange={formItem?.onChange}></RadioGroup>)
     } 
-    if(formItem.type===FormItemType.Checkbox){
-        return (<CheckboxGroup
-            v-model:value={formItem.value}   options={formItem.options}  onChange={formItem?.onChange}
-      ></CheckboxGroup>)
-    }
     //选择框
     if(formItem.type===FormItemType.Select){
         return(<Select v-model:value={formItem.value} mode={formItem.mode} 
@@ -69,7 +64,6 @@ function createFormItem(formItem: any){
     }
     //数字文本框
     if(formItem.type===FormItemType.InputNumber){
-        console.log(formItem);
         return(<InputNumber v-model:value={formItem.value} 
             min={formItem.min}
             max={formItem.max}
@@ -78,6 +72,15 @@ function createFormItem(formItem: any){
             prefix={formItem?.prefix!=null?<img src={formItem.prefix} class='InputIcon' />:null}
         ></InputNumber>)
     }
+    //多选框
+    if(formItem.type===FormItemType.Checkbox){
+        return (<CheckboxGroup v-model:value={formItem.value}  
+            options={formItem.options} 
+            onChange={formItem?.onChange}
+            indeterminate={formItem?.indeterminate}
+      ></CheckboxGroup>)
+    }
+
     //提交按钮内容
     if(formItem.type==='submit'){
         return(

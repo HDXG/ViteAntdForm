@@ -2,11 +2,16 @@
 
 <template>
   <h1>呢容</h1>
+  <UploadDesign />
   <DynamicForm :options="formOption" :config="formConfig" :value="formState" :onFormFinish="handleButton"  />
+
+ 
 </template>
 
 
 <script setup lang="ts">
+
+import UploadDesign from '../antDesignVue/AssemblyDesign/UploadDesign.vue'
 import '../style.css'
 import{reactive} from 'vue'
 import DynamicForm from '../antDesignVue/FormDesign/antForm'
@@ -21,6 +26,7 @@ interface formItem{
     Date:string,
     BeginDate:[],
     money:number,
+    career:any,
 }
 const formState=reactive<formItem>({
     resource:'0',
@@ -30,6 +36,7 @@ const formState=reactive<formItem>({
     Date:'',
     BeginDate:[],
     money:1,
+    career:[]
 })
 const formOption=reactive<any>([
   {
@@ -78,6 +85,19 @@ const formOption=reactive<any>([
     }
   },
   {
+    type:FormItemType.Checkbox,
+    label:'职业',
+    fileId:'career',
+    value:formState.career,
+    options:[{value:-1,label:'全选'},{value:1,label:'牛马'},{value:2,label:'小牛马'},
+      {value:3,label:'大牛马'},{value:4,label:'不是牛马'}] as FormItemOption[],
+    // FormRules:[{required:true,message:'请选择职业'}] as FormRules[],
+    // indeterminate:true,
+    onChange:(value)=>{
+      console.log(value)
+    }
+  },
+  {
     type:FormItemType.InputNumber,
     label:'金额',
     fileId:'money',
@@ -117,7 +137,9 @@ const formOption=reactive<any>([
   }
 ])
 const formConfig=new FormConfig();
+formConfig.wrapperCol={span:12} as FormLabelWrapperCol;
 const handleButton=((value:formItem)=>{
+  console.log(value);
   console.log(value.class.join(','));
 })
 
