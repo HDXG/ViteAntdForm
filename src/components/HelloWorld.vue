@@ -1,19 +1,13 @@
 
 
 <template>
-  <h1>呢容</h1>
-  <UploadDesign />
   <DynamicForm :options="formOption" :config="formConfig" :value="formState" :onFormFinish="handleButton"  />
-
- 
 </template>
 
 
 <script setup lang="ts">
-
-import UploadDesign from '../antDesignVue/AssemblyDesign/UploadDesign.vue'
 import '../style.css'
-import{reactive} from 'vue'
+import{onMounted, reactive} from 'vue'
 import DynamicForm from '../antDesignVue/FormDesign/antForm'
 import { DatePickerPresetsData, FormConfig, FormItemOption, FormItemSelectMode, FormItemType,FormLabelWrapperCol,FormRules } from '../antDesignVue/public-index'
 import SVG_ICONS from '../icons/SVG_ICONS'
@@ -130,7 +124,6 @@ const formOption=reactive<any>([
       formState.BeginDate=timeFormat(value,1)
     }
   },
- 
   {
     type:'submit',
     wrapperCol:{ span:12, offset:6}  as FormLabelWrapperCol
@@ -139,8 +132,11 @@ const formOption=reactive<any>([
 const formConfig=new FormConfig();
 formConfig.wrapperCol={span:12} as FormLabelWrapperCol;
 const handleButton=((value:formItem)=>{
-  console.log(value);
   console.log(value.class.join(','));
+})
+
+onMounted(()=>{
+  console.log(1);
 })
 
 </script>

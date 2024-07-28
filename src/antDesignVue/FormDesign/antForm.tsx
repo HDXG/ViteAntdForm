@@ -27,7 +27,7 @@ function createFormItem(formItem: any){
             prefix={formItem?.prefix!=null?<img src={formItem.prefix} class='InputIcon' />:null}
             suffix={formItem?.suffix!=null?<img src={formItem.suffix} class='InputIcon' />:null}
             >
-         </Input>)
+        </Input>)
     }
     if(formItem.type === FormItemType.Radio) {
         return (<RadioGroup
@@ -77,8 +77,8 @@ function createFormItem(formItem: any){
         return (<CheckboxGroup v-model:value={formItem.value}  
             options={formItem.options} 
             onChange={formItem?.onChange}
-            indeterminate={formItem?.indeterminate}
-      ></CheckboxGroup>)
+            indeterminate={formItem?.indeterminate}>
+            </CheckboxGroup>)
     }
 
     //提交按钮内容
@@ -101,12 +101,12 @@ export default  defineComponent({
         onFormFinish: {  
             type: Function as PropType<(values: any) => void>,  
             required: false,  
-          },  
+        },  
         onFormFinishFailed: {  
             type: Function as PropType<(errorInfo: any) => void>,  
             required: false,  
-          },  
-      },  
+        },  
+    },  
     setup(props){
         //表单提交成功事件
         const handleSubmit = (values:any) => { 
@@ -148,8 +148,6 @@ export default  defineComponent({
                         props.value[item.fileId]=item.value; 
                         break;
                 }
-               
-                
             })
         });
         const config=props.config as FormConfig;
