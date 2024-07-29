@@ -13,7 +13,8 @@ function renderFormItem(formItems: any[]) {
             }
             return (<FormItem  label={ele?.label} name={ele?.fileId}
                 wrapper-col={ele?.wrapperCol}
-                rules={ele?.FormRules}>{createFormItem(ele)}
+                rules={ele?.FormRules}>
+                    {createFormItem(ele)}
             </FormItem>)
         })
 }
@@ -37,10 +38,11 @@ function createFormItem(formItem: any){
     //选择框
     if(formItem.type===FormItemType.Select){
         return(<Select v-model:value={formItem.value} mode={formItem.mode} 
-              options={formItem.options} 
-              onChange={formItem?.onChange} 
-              suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}
-            ></Select>)
+            options={formItem.options} 
+            onChange={formItem?.onChange} 
+            suffixIcon={formItem?.suffixIcon!=null?<img src={formItem.suffixIcon} class='InputIcon' />:null}>
+                
+            </Select>)
     }
     //日期选择
     if(formItem.type===FormItemType.DatePicker){
@@ -96,7 +98,7 @@ export default  defineComponent({
     name:'DynamicForm',
     props: {  
         options: {  type: Array as PropType<any[]>, required: true,},
-        config:{type:null,required:true},
+        config:{type:FormConfig,required:true},
         value:{type:null,required:true},
         onFormFinish: {  
             type: Function as PropType<(values: any) => void>,  
@@ -122,6 +124,8 @@ export default  defineComponent({
             // }  
         }
         watch(props.options,(newValue:any[])=>{
+            if(Object.keys(props.value).length==0)
+                return;
             newValue.map((item)=>{
                 switch(item.type as FormItemType){
                      //日期判断
@@ -150,17 +154,15 @@ export default  defineComponent({
                 }
             })
         });
-        const config=props.config as FormConfig;
         return ()=>(<Form   name="basic" model={props.value} 
-            label-col={config?.labelCol}
-            wrapper-col={config?.wrapperCol}
-            layout={config?.layout}
-            autocomplete={config?.autocomplete}
-            disabled={config?.disabled}
+            label-col={props.config?.labelCol}
+            wrapper-col={props.config?.wrapperCol}
+            layout={props.config.layout}
+            autocomplete={props.config?.autocomplete}
+            disabled={props.config?.disabled}
             onFinish={handleSubmit}
-            onFinishFailed={finishFailed} 
-          >
-            {renderFormItem(props.options)}
+            onFinishFailed={finishFailed} > 
+                {renderFormItem(props.options)}
         </Form>);
     },
 });

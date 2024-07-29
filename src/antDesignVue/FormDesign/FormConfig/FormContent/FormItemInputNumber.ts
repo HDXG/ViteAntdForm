@@ -19,6 +19,6 @@ export class FormItemInputNumber extends FormItem{
     bordered:boolean=true;
 
     //前缀图标
-    prefix?:string='';
+    prefix?:string | any=null;
 
 }
