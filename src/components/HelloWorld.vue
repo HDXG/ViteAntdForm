@@ -108,7 +108,7 @@ const formOption=reactive<any>([
     placeholder:'请输入内容',
     FormRules:[{required:true,message:'请选择日期'}] as FormRules[],
     onChange:(value)=>{
-      formState.Date=timeFormat(value)
+        formState.Date=value;
     }
   },
   {
@@ -131,12 +131,14 @@ const formOption=reactive<any>([
 ])
 const formConfig=new FormConfig();
 formConfig.wrapperCol={span:12} as FormLabelWrapperCol;
+formConfig.rules=false;
 const handleButton=((value:formItem)=>{
-  console.log(value.class.join(','));
+  console.log('------------handleButton-------------');
+  console.log(value);
+  console.log(formState);
 })
 
 onMounted(()=>{
-  console.log(1);
 })
 
 </script>

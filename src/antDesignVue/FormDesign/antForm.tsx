@@ -1,19 +1,22 @@
 
 import {  defineComponent, PropType, watch } from 'vue';
-import {  FormConfig, FormItemType } from './FormConfig/public-index';
+import {  FormItemType } from './FormConfig/public-index';
 import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,InputNumber,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
 import 'dayjs/locale/zh-cn';
 import { timeFormat } from '../../utils/dateTime';
-function renderFormItem(formItems: any[]) {
-    return formItems.map((ele: any) => 
+function renderFormItem(formItems: any[],formConfig:any) {
+    return formItems.map((ele: any,index:number) => 
         {
             //IsItDisplayed 判断表单项是否显示
             if(ele.IsItDisplayed){
                 return (<></>);
             }
             return (<FormItem  label={ele?.label} name={ele?.fileId}
+                onClick={() =>formConfig.formDesignAntSelect=index}
+                class={formConfig?.formDesignAndCreate?
+                    formConfig.formDesignAntSelect==index?'formItemDivSelect':'formItemDiv':''}
                 wrapper-col={ele?.wrapperCol}
-                rules={ele?.FormRules}>
+                rules={formConfig?.rules?ele?.FormRules:[]}>
                     {createFormItem(ele)}
             </FormItem>)
         })
@@ -98,7 +101,7 @@ export default  defineComponent({
     name:'DynamicForm',
     props: {  
         options: {  type: Array as PropType<any[]>, required: true,},
-        config:{type:FormConfig,required:true},
+        config:{type:null,required:true},
         value:{type:null,required:true},
         onFormFinish: {  
             type: Function as PropType<(values: any) => void>,  
@@ -118,11 +121,13 @@ export default  defineComponent({
         };  
         //表单提交失败事件
         const finishFailed=(errorInfo:any)=>{
+            console.log(2);
+            console.log(errorInfo);
             message.error(errorInfo.errorFields[0].errors);
             // if (props.onFormFinishFailed) {  
             //     props.onFormFinishFailed(errorInfo);  
             // }  
-        }
+        } 
         watch(props.options,(newValue:any[])=>{
             if(Object.keys(props.value).length==0)
                 return;
@@ -134,19 +139,12 @@ export default  defineComponent({
                         {
                             var dateTime:any=null;
                             if(item.DateType==1){
-                               if(item.value!=null){
-                                var date:any=[];
-                                item.value.map((dateItem)=>{
-                                    date.push(timeFormat(dateItem));
-                                });
-                                dateTime=date;
-                               }
+                                dateTime=timeFormat(item.value,1);
                             }
                             else
-                                dateTime=item.value;
-                            props.value[item.fileId]=timeFormat(dateTime);
+                                dateTime=timeFormat(item.value);
+                            props.value[item.fileId]=dateTime;
                         }
-                           
                         break;
                     default:
                         props.value[item.fileId]=item.value; 
@@ -157,12 +155,12 @@ export default  defineComponent({
         return ()=>(<Form   name="basic" model={props.value} 
             label-col={props.config?.labelCol}
             wrapper-col={props.config?.wrapperCol}
-            layout={props.config.layout}
+            layout={props.config?.layout}
             autocomplete={props.config?.autocomplete}
             disabled={props.config?.disabled}
             onFinish={handleSubmit}
             onFinishFailed={finishFailed} > 
-                {renderFormItem(props.options)}
+                {renderFormItem(props.options,props.config)}
         </Form>);
     },
 });

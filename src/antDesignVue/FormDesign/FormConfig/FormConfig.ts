@@ -11,6 +11,15 @@ export class FormConfig {
 
     //是否禁用 true=禁用
     disabled:boolean=false;
+
+    //是否启用验证内容
+    rules:boolean=true;
+
+    //判断是表单设计器还是  创建表单false
+    formDesignAndCreate:boolean=false;
+
+    //表单设计器中选中的组件
+    formDesignAntSelect:number=-1;
 };
 
 export class FormLabelWrapperCol{

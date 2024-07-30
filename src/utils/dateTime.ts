@@ -14,14 +14,14 @@ export function getNowDate(formatValue:dateFormatEnum =dateFormatEnum.YYYYMMDD) 
  */
 export function timeFormat(timeValue: ConfigType | any,typeValue:number=0,formatValue:dateFormatEnum =dateFormatEnum.YYYYMMDD) {
   if(typeValue==1){
-     if(timeValue!=null){
-      var dataTime:any=[];
-      timeValue.map((item)=>{
-        dataTime.push(dayjs(item).format(formatValue));
-      })
-      return dataTime;
-     }
-     else
+      if(timeValue!=null){
+        var dataTime:any=[];
+        timeValue.map((item)=>{
+          dataTime.push(dayjs(item).format(formatValue));
+        })
+        return dataTime;
+      }
+      else
       return [];
   }
   return dayjs(timeValue).format(formatValue);
