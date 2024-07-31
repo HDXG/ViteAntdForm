@@ -30,7 +30,7 @@
         </a-col>
         <a-col :span="6"   >
             <a-layout style="padding: 0 5px 5px;">
-                <a-layout-content style="background:#fff;min-height:100vh;">
+                <a-layout-content style="background:#fff;min-height:100vh;padding:10px;">
                     <a-tabs v-model:activeKey="activeKey">
                         <a-tab-pane key="1">
                             <template #tab>
@@ -83,7 +83,49 @@
                                 <img :src="SVG_ICONS.design.formOption" width="20" height="20" />
                                 <span>组件配置</span>
                             </template>
-                                Tab 2
+                            <div style="margin-top: 50px;" v-if="formConfig.formDesignAntSelect==-1">
+                                <img :src="SVG_ICONS.design.wu" />
+                                <hr>
+                                <h2 style="text-align: center;">暂无数据</h2>
+                            </div>
+                            <a-form layout="horizontal" v-if="formConfig.formDesignAntSelect>-1">
+                                <a-form-item label="标签名称">
+                                    <a-input v-model:value="formOption[formConfig.formDesignAntSelect].label"></a-input>
+                                </a-form-item>
+                                <a-form-item label="数据字段">
+                                    <a-input v-model:value="formOption[formConfig.formDesignAntSelect].fileId"></a-input>
+                                </a-form-item>
+                                <a-form-item label="显示值">
+                                    <a-input v-model:value="formOption[formConfig.formDesignAntSelect].value"></a-input>
+                                </a-form-item>
+                                <a-form-item label="提示内容">
+                                    <a-input v-model:value="formOption[formConfig.formDesignAntSelect].placeholder"></a-input>
+                                </a-form-item>
+                                <a-form-item label="前缀图标">
+                                    <a-select  showSearch allowClear 
+                                        @change="formOption[formConfig.formDesignAntSelect].prefix=$event" >
+                                        <a-select-option v-for="item in IconOptions" :value="item.value">
+                                            {{ item.label }}
+                                        </a-select-option>
+                                    </a-select>
+                                </a-form-item>
+                                <a-form-item label="后缀图标">
+                                    <a-select  showSearch allowClear 
+                                        @change="formOption[formConfig.formDesignAntSelect].suffix=$event;;" >
+                                        <a-select-option v-for="item in IconOptions" :value="item.value">
+                                            {{ item.label }}
+                                        </a-select-option>
+                                    </a-select>
+                                </a-form-item>
+                                <a-form-item label="操作">
+                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].clear">清除</a-checkbox>
+                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].disabled">禁用</a-checkbox>
+                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].IsItDisplayed">显示</a-checkbox>
+                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].bordered">边框</a-checkbox>
+                                    
+                                </a-form-item>
+                                <hr>
+                            </a-form>
                         </a-tab-pane>
                     </a-tabs>
                 </a-layout-content>
@@ -104,13 +146,19 @@ import   {FormConfig,DatePickerPresetsData,FormRules,FormItemOption,
 } from '../antDesignVue/public-index'
 import { timeFormat } from '../utils/dateTime'
 import DynamicForm from '../antDesignVue/FormDesign/antForm'
-const activeKey = ref('1');
+import IconOptions from '../icons/IconOptions.ts'
+const activeKey = ref('2');
 
 
 
 //------------------表单配置区域-------------------------------------------------------
 const formConfigLayout=ref(["horizontal","vertical","inline"]);
 
+
+//组件配置
+const formOptionConfig=reactive({
+
+});
 
 //表单配置
 const formConfig=reactive<FormConfig | any>({
@@ -119,12 +167,21 @@ const formConfig=reactive<FormConfig | any>({
     disabled:false,
     rules:true,
     formDesignAndCreate:true,
-    formDesignAntSelect:-1
+    formDesignAntSelect:0
 });
 
 watch(formConfig,(newValue)=>{
-    console.log(newValue.formDesignAntSelect);
+    if(newValue.formDesignAntSelect>-1){
+        activeKey.value="2";
+    }
 })
+watch(activeKey,(newValue)=>{
+    if(newValue=="1")
+        formConfig.formDesignAntSelect=-1;
+})
+
+
+
 
 //Form组件配置label宽度
 const formConfigLabelDesign=reactive<antDesignFormConfig>({
@@ -132,7 +189,6 @@ const formConfigLabelDesign=reactive<antDesignFormConfig>({
     labelWidth:100,
     labelSpan:4,
     labelOffSet:0,
-    
 });
 //标签布局方法
 const handleLabelWidthValue=(value)=>{
@@ -144,11 +200,10 @@ const handleLabelWidthValue=(value)=>{
 }
 //标签布局中 固定和栅栏 的方法汇总
 const handleLabelWidthSpanOffset=()=>{
-    if(formConfigLabelDesign.labelWidthValue=='固定'){
+    if(formConfigLabelDesign.labelWidthValue=='固定')
         handleLabelWidthValue('固定');
-    }else{
+    else
         handleLabelWidthValue('栅格');
-    }
 }
 
 
@@ -162,6 +217,9 @@ const formOption=reactive<any>([
     label:'测试内容',
     fileId:'textarea',
     value:formState.textarea,
+    disabled:false,
+    bordered:true,
+    clear:true,
     placeholder:'请输入内容',
     FormRules:[{required:true,message:'请输入测试内容'}] as FormRules[],
     prefix:SVG_ICONS.setup.exitfullscreennew,
@@ -234,21 +292,14 @@ const formOption=reactive<any>([
     onChange:(value)=>{
         formState.BeginDate=timeFormat(value,1)
     }
-},
-{
-    type:'submit',
-    wrapperCol:{ span:12, offset:6}  as FormLabelWrapperCol
 }
 ])
 
-//表单提交
-const handleButton=(value)=>{
-    console.log(value);
-}
 
 
 
-//组件内容区域--------------------
+
+//------------------组件内容区域-----------
 const antDesignOption=reactive<antDesignContext[]>([
     {
         title:'文本框',
@@ -285,10 +336,12 @@ const antDesignOption=reactive<antDesignContext[]>([
 const handleDesignContext=(item)=>{
     const antDesignService=new antDesignContextService();
     formOption.push(antDesignService.AddContext(item));
-    console.log(formOption);
 }
 
-
+//表单提交
+const handleButton=(value)=>{
+    console.log(value);
+}
 
 </script>
 <style  scoped>

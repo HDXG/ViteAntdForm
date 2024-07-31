@@ -12,7 +12,9 @@ function renderFormItem(formItems: any[],formConfig:any) {
                 return (<></>);
             }
             return (<FormItem  label={ele?.label} name={ele?.fileId}
-                onClick={() =>formConfig.formDesignAntSelect=index}
+                onClick={() =>
+                    formConfig.formDesignAntSelect=index
+                }
                 class={formConfig?.formDesignAndCreate?
                     formConfig.formDesignAntSelect==index?'formItemDivSelect':'formItemDiv':''}
                 wrapper-col={ele?.wrapperCol}
@@ -26,8 +28,10 @@ function createFormItem(formItem: any){
     if(formItem.type === FormItemType.Input){
         return (<Input v-model:value={formItem.value}
             bordered={formItem?.bordered}
-            placeholder={formItem.placeholder} allow-clear 
+            placeholder={formItem.placeholder} 
+            allow-clear={formItem.clear}
             onChange={formItem?.onChange}
+            disabled={formItem.disabled}
             prefix={formItem?.prefix!=null?<img src={formItem.prefix} class='InputIcon' />:null}
             suffix={formItem?.suffix!=null?<img src={formItem.suffix} class='InputIcon' />:null}
             >

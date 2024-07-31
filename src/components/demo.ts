@@ -8,8 +8,6 @@ export class antDesignContext{
     type:FormItemType=FormItemType.Input
 };
 
-
-
 /**
  * Form表单label配置内容
  */
@@ -19,9 +17,6 @@ export class antDesignFormConfig{
     labelSpan:number=4;
     labelOffSet:number=0;
 }
-
-
-
 /**
  * 根据组件内容的按钮点击，添加不同的表单配置内容
  */
@@ -73,3 +68,4 @@ export class antDesignContextService{
         }
     }
 }
+

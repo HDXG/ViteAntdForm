@@ -10,6 +10,7 @@ import input from './svg/Design/input.svg?url'
 import textArea from './svg/Design/textArea.svg?url'
 import formConfig from './svg/Design/formConfig.svg?url'
 import formOption from './svg/Design/formOption.svg?url'
+import wu from './svg/Design/wu.svg?url'
 export default{
     setup:{
         exitfullscreennew,
@@ -26,5 +27,6 @@ export default{
         datePicker,
         select,
         upload,
+        wu
     }
 }

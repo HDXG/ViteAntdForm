@@ -16,6 +16,8 @@ export class FormItem{
    IsItDisplayed:boolean=false;
    //placeholder 框内可显示文字
    placeholder: string = '';
+   //是否支持清除
+   clear:boolean=true;
 
    FormRules?:FormRules[];
 }
