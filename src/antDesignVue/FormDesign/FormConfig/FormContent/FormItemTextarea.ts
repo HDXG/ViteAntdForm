@@ -10,7 +10,7 @@ export class FormItemTextareaType{
 export class FormItemTextarea extends FormItem{
     type: FormItemType=FormItemType.Textarea;
     showCount:boolean=true;
-    maxlength:number=200;
     allowClear:boolean=true;
     autoSize:FormItemTextareaType | any;
+    onChange:void=undefined;
 }

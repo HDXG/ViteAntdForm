@@ -1,7 +1,7 @@
 
 import {  defineComponent, PropType, watch } from 'vue';
 import {  FormItemType } from './FormConfig/public-index';
-import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,InputNumber,message,RadioGroup,RangePicker,Select} from 'ant-design-vue'
+import { Button, CheckboxGroup, DatePicker, Form,FormItem,Input,InputNumber,message,RadioGroup,RangePicker,Select, Textarea} from 'ant-design-vue'
 import 'dayjs/locale/zh-cn';
 import { timeFormat } from '../../utils/dateTime';
 function renderFormItem(formItems: any[],formConfig:any) {
@@ -36,6 +36,18 @@ function createFormItem(formItem: any){
             suffix={formItem?.suffix!=null?<img src={formItem.suffix} class='InputIcon' />:null}
             >
         </Input>)
+    }
+    //文本域内容
+    if(formItem.type===FormItemType.Textarea){
+        return (<Textarea  v-model:value={formItem.value}
+            bordered={formItem?.bordered}
+            placeholder={formItem.placeholder} 
+            showCount={formItem.showCount}
+            auto-size={formItem.autoSize}
+            onChange={formItem?.onChange}
+            disabled={formItem.disabled}
+            >
+        </Textarea>)
     }
     if(formItem.type === FormItemType.Radio) {
         return (<RadioGroup

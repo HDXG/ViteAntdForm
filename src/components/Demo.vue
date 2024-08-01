@@ -88,7 +88,7 @@
                                 <hr>
                                 <h2 style="text-align: center;">暂无数据</h2>
                             </div>
-                            <a-form layout="horizontal" v-if="formConfig.formDesignAntSelect>-1">
+                            <a-form :label-col="{ span:5 }" layout="horizontal" v-if="formConfig.formDesignAntSelect>-1">
                                 <a-form-item label="标签名称">
                                     <a-input v-model:value="formOption[formConfig.formDesignAntSelect].label"></a-input>
                                 </a-form-item>
@@ -101,7 +101,7 @@
                                 <a-form-item label="提示内容">
                                     <a-input v-model:value="formOption[formConfig.formDesignAntSelect].placeholder"></a-input>
                                 </a-form-item>
-                                <a-form-item label="前缀图标">
+                                <a-form-item v-if="formOptionConfig.prefixEnable" label="前缀图标">
                                     <a-select  showSearch allowClear 
                                         @change="formOption[formConfig.formDesignAntSelect].prefix=$event" >
                                         <a-select-option v-for="item in IconOptions" :value="item.value">
@@ -109,7 +109,7 @@
                                         </a-select-option>
                                     </a-select>
                                 </a-form-item>
-                                <a-form-item label="后缀图标">
+                                <a-form-item v-if="formOptionConfig.suffixEnable"  label="后缀图标">
                                     <a-select  showSearch allowClear 
                                         @change="formOption[formConfig.formDesignAntSelect].suffix=$event;;" >
                                         <a-select-option v-for="item in IconOptions" :value="item.value">
@@ -118,11 +118,10 @@
                                     </a-select>
                                 </a-form-item>
                                 <a-form-item label="操作">
-                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].clear">清除</a-checkbox>
-                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].disabled">禁用</a-checkbox>
-                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].IsItDisplayed">显示</a-checkbox>
-                                    <a-checkbox v-model:checked="formOption[formConfig.formDesignAntSelect].bordered">边框</a-checkbox>
-                                    
+                                    <a-checkbox v-if="formOptionConfig.clearEnable"  v-model:checked="formOption[formConfig.formDesignAntSelect].clear">清除</a-checkbox>
+                                    <a-checkbox v-if="formOptionConfig.disabledEnable"  v-model:checked="formOption[formConfig.formDesignAntSelect].disabled">禁用</a-checkbox>
+                                    <a-checkbox v-if="formOptionConfig.IsItDisplayedEnable"  v-model:checked="formOption[formConfig.formDesignAntSelect].IsItDisplayed">显示</a-checkbox>
+                                    <a-checkbox v-if="formOptionConfig.borderedEnable"  v-model:checked="formOption[formConfig.formDesignAntSelect].bordered">边框</a-checkbox>
                                 </a-form-item>
                                 <hr>
                             </a-form>
@@ -155,9 +154,14 @@ const activeKey = ref('2');
 const formConfigLayout=ref(["horizontal","vertical","inline"]);
 
 
-//组件配置
+//组件配置 配置是否显示该配置项
 const formOptionConfig=reactive({
-
+    prefixEnable:true,
+    suffixEnable:true,
+    clearEnable:true,
+    disabledEnable:true,
+    IsItDisplayedEnable:true,
+    borderedEnable:true,
 });
 
 //表单配置
@@ -229,10 +233,11 @@ const formOption=reactive<any>([
     }
 },
 {
-    type:FormItemType.Input,
+    type:FormItemType.Textarea,
     label:'测试内容2',
     fileId:'textarea1',
     value:formState.textarea1,
+    disabled:false,
     placeholder:'请输入内容',
     FormRules:[{required:true,message:'请输入测试内容2'}] as FormRules[],
     onChange:(value)=>{
